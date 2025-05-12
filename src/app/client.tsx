@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Project from '../components/project';
 import Modal from '../components/modal';
 import { motion } from 'framer-motion';
 import { Poppins } from 'next/font/google';

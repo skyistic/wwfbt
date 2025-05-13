@@ -53,27 +53,27 @@ const videos = [
 
 const reels = [
   {
-    link: "https://www.instagram.com/wewerefightingbeforethis/reel/DJXLM9EyMKo/",
+    link: "https://www.instagram.com/p/DJj__NmPY8X/",
     title: "Episode 1 Highlight",
-    thumbnail: "1.jpg",
+    thumbnail: "reel_4.jpg",
     description: "Watch the best moments from Episode 1"
   },
   {
-    link: "https://www.instagram.com/wewerefightingbeforethis/reel/DJXLM9EyMKo/",
+    link: "https://www.instagram.com/p/DJcHfCOpaRK/",
     title: "Episode 2 Highlight",
-    thumbnail: "1.jpg",
+    thumbnail: "reel_3.jpg",
     description: "Watch the best moments from Episode 2"
   },
   {
-    link: "https://www.instagram.com/wewerefightingbeforethis/reel/DJXLM9EyMKo/",
+    link: "https://www.instagram.com/p/DJZaPYXpCJX/",
     title: "Episode 3 Highlight",
-    thumbnail: "1.jpg",
+    thumbnail: "reel_2.jpg",
     description: "Watch the best moments from Episode 3"
   },
   {
-    link: "https://www.instagram.com/wewerefightingbeforethis/reel/DJXLM9EyMKo/",
+    link: "https://www.instagram.com/p/DJXLM9EyMKo/",
     title: "Episode 4 Highlight",
-    thumbnail: "1.jpg",
+    thumbnail: "reel_1.jpg",
     description: "Watch the best moments from Episode 4"
   }
 ]
@@ -111,7 +111,7 @@ export default function ClientPage() {
   const handleVideoClick = (link: string) => {
     if (link.includes('instagram.com')) {
       // Extract reel ID from Instagram URL
-      const reelId = link.split('/reel/')[1].split('/')[0];
+      const reelId = link.split('/p/')[1].split('/')[0];
       setVideoPopup({active: true, videoId: reelId, type: 'instagram'})
     } else {
       // Handle YouTube video
@@ -121,6 +121,8 @@ export default function ClientPage() {
 
   return (
     <main className="flex min-h-screen flex flex-col items-center justify-center bg-white overflow-x-hidden">
+      <Analytics />
+      
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
       {/* Hero Section */}
       <div className="bg-[#f8e7d3] text-[#532a24] w-screen min-h-screen flex flex-col items-center justify-center">

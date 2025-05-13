@@ -6,6 +6,7 @@ import { Poppins } from 'next/font/google';
 import { useRef } from 'react';
 import Link from 'next/link';
 import { Analytics } from "@vercel/analytics/next"
+import { track } from '@vercel/analytics';
 
 const poppins = Poppins({ 
   weight: '900',
@@ -78,6 +79,46 @@ const reels = [
   }
 ]
 
+function CurvedLine({isInView}: {isInView: boolean}) {
+  const [paths, setPaths] = useState({
+    initial: "",
+    target: ""
+  });
+
+  useEffect(() => {
+    if (!window) return;
+
+    setPaths({
+      initial: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 200 0 0`,
+      target: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 0 0 0`,
+    });
+  }, []);
+
+  const curve = {
+    initial: {
+      d: paths.initial
+    },
+    enter: {
+      d: paths.target,
+      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
+    },
+    exit: {
+      d: paths.initial,
+      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
+    }
+  };
+
+  return (
+    <svg className="absolute overflow-hidden top-0 left-0 w-full h-full fill-white stroke-none">
+      <motion.path 
+        variants={curve} 
+        initial="initial" 
+        animate={isInView ? "enter" : "exit"}
+      ></motion.path>
+    </svg>
+  );
+}
+
 export default function ClientPage() {
   const [modal, setModal] = useState({active: false, index: 0, image: false, string: "View"})
   const [modalWithImage, setModalWithImage] = useState({active: false, index: 0, image: false, string: "View"})
@@ -87,7 +128,8 @@ export default function ClientPage() {
   const refEpisodes = useRef(null);
   const refShortsTitle = useRef(null);
   const refShorts = useRef(null);
-  
+  const refCurvedLine = useRef(null);
+
   // Add effect to control body overflow
   useEffect(() => {
     if (videoPopup.active) {
@@ -107,225 +149,227 @@ export default function ClientPage() {
   const isInViewEpisodes = useInView(refEpisodes, { once: false });
   const isInViewShortsTitle = useInView(refShortsTitle, { once: false });
   const isInViewShorts = useInView(refShorts, { once: false, amount: 0.3 });
+  const isInViewCurvedLine = useInView(refCurvedLine, { once: false });
 
   const handleVideoClick = (link: string) => {
     if (link.includes('instagram.com')) {
       // Extract reel ID from Instagram URL
       const reelId = link.split('/p/')[1].split('/')[0];
       setVideoPopup({active: true, videoId: reelId, type: 'instagram'})
+      track('Video View', { type: 'instagram', id: reelId });
     } else {
       // Handle YouTube video
       setVideoPopup({active: true, videoId: link, type: 'youtube'})
+      track('Video View', { type: 'youtube', id: link });
     }
   }
 
   return (
-    <main className="flex min-h-screen flex flex-col items-center justify-center bg-white overflow-x-hidden">
+    <main className="flex min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden">
       <Analytics />
       
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
-      {/* Hero Section */}
-      <div className="bg-[#f8e7d3] text-[#532a24] w-screen min-h-screen flex flex-col items-center justify-center">
-        <div className="flex flex-row overflow-hidden gap-4">
-          <div className="h-[90px]">
-            <motion.h2 
-              initial={{ y: -400 }}
+        {/* Hero Section */}
+        <div className="bg-[#f8e7d3] text-[#532a24] w-screen min-h-screen flex flex-col items-center justify-center">
+          <div className="flex flex-row overflow-hidden gap-4">
+            <div className="h-[90px]">
+              <motion.h2 
+                initial={{ y: -400 }}
+                animate={{ y: 0 }}
+                transition={{ 
+                  duration: 1,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className={`text-[60px] font-semibold ${poppins.className}`}
+              >
+                We Were Fighting<br/>We Were Fighting<br/>We Were Fighting
+              </motion.h2>
+            </div>
+            <div className="h-[90px]">
+              <motion.h2 
+                initial={{ y: 200 }}
+                animate={{ y: -180 }}
+                transition={{ 
+                  duration: 1,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className={`text-[60px] font-semibold ${poppins.className}`}
+              >
+                Before This<br/>Before This<br/>Before This
+              </motion.h2>
+            </div>
+          </div>
+          <div className="h-8 overflow-hidden">
+            <motion.span 
+              initial={{ y: -50 }}
               animate={{ y: 0 }}
               transition={{ 
+                delay: 0.5,
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[60px] font-semibold ${poppins.className}`}
+              className="block text-xl"
             >
-              We Were Fighting<br/>We Were Fighting<br/>We Were Fighting
-            </motion.h2>
+              A podcast dedicated to arguments 🗣️
+            </motion.span>
           </div>
-          <div className="h-[90px]">
+        </div>
+
+        {/* Video Section */}
+        <div className="text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-start justify-center">
+          <div ref={ref} className="w-full h-14 my-10 overflow-hidden">
             <motion.h2 
-              initial={{ y: 200 }}
-              animate={{ y: -180 }}
+              initial={{ y: -70 }}
+              animate={isInView ? { y: 0 } : { y: -70 }}
               transition={{ 
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[60px] font-semibold ${poppins.className}`}
+              className={`text-[40px] font-semibold ${poppins.className}`}
             >
-              Before This<br/>Before This<br/>Before This
+              Episodes
             </motion.h2>
           </div>
+          <div ref={refEpisodes} className="flex flex-row gap-4 w-full overflow-x-auto pb-4">
+            {videos.map((video, index) => {
+              return (
+                <div key={index} className="w-1/3 flex flex-col items-center justify-center gap-4">
+                  <motion.div 
+                    initial={{ scale: 0.8 }}
+                    animate={isInViewEpisodes ? { scale: 1 } : { scale: 0.8 }}
+                    transition={{ 
+                      duration: 1,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: index * 0.2
+                    }}
+                    key={index} 
+                    onClick={() => handleVideoClick(video.link)}
+                    onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
+                    onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
+                    className="relative cursor-pointer w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <img src={`/images/${video.thumbnail}`} alt={video.title} className="w-full h-full object-cover rounded-2xl" />
+                  </motion.div>
+                  <motion.span 
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={isInViewEpisodes ? { y: 0, opacity: 1 } : { y: -10, opacity: 0 }}
+                    transition={{ 
+                      duration: 1,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: 0.2
+                    }}
+                  >
+                    <span>{video.title}</span>
+                  </motion.span>
+                </div>
+              )
+            })}
+          </div>
         </div>
-        <div className="h-8 overflow-hidden">
-          <motion.span 
-            initial={{ y: -50 }}
-            animate={{ y: 0 }}
-            transition={{ 
-              delay: 0.5,
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className="block text-xl"
-          >
-            A podcast dedicated to arguments 🗣️
-          </motion.span>
-        </div>
-      </div>
 
-      {/* Video Section */}
-      <div className="text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-start justify-center">
-        <div ref={ref} className="w-full h-14 my-10 overflow-hidden">
-          <motion.h2 
-            initial={{ y: -70 }}
-            animate={isInView ? { y: 0 } : { y: -70 }}
-            transition={{ 
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className={`text-[40px] font-semibold ${poppins.className}`}
-          >
-            Episodes
-          </motion.h2>
+        {/* Links Section */}
+        <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center">
+          <div ref={refLinksTitle} className="w-full h-14 my-10 overflow-hidden">
+            <motion.h2 
+              initial={{ y: -70 }}
+              animate={isInViewLinksTitle ? { y: 0 } : { y: -70 }}
+              transition={{ 
+                duration: 1,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              className={`text-[40px] font-semibold ${poppins.className}`}
+            >
+              Follow Us
+            </motion.h2>
+          </div>
+          <div className="w-full">
+            {
+              projects.map( (project, index) => {
+                return (
+                  <Link  
+                    key={index} 
+                    href={project.link}
+                    target="_blank"
+                    onClick={() => track('Link Click', { title: project.title, url: project.link })}
+                    onMouseEnter={() => {setModalWithImage({active: true, index, image: true, string: "View"})}} 
+                    onMouseLeave={() => {setModalWithImage({active: false, index, image: false, string: "View"})}} 
+                    className="flex w-full justify-between items-center p-[50px_50px] border-t border-[rgb(201,201,201)] cursor-pointer transition-all duration-200 hover:opacity-50 last:border-b"
+                  >
+                    <h2 className="text-[40px] m-0 font-normal transition-all duration-400 group-hover:-translate-x-[10px]">{project.title}</h2>
+                    <p className="transition-all duration-400 font-light group-hover:translate-x-[10px]">{project.description}</p>
+                  </Link>
+                )
+              })
+            }
+          </div>
         </div>
-        <div ref={refEpisodes} className="flex flex-row gap-4 w-full overflow-x-auto pb-4">
-          {videos.map((video, index) => {
-            return (
-              <div key={index} className="w-1/3 flex flex-col items-center justify-center gap-4">
+
+        {/* Shorts Section */}
+        <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center"> 
+          <div ref={refShortsTitle} className="w-full h-14 my-10 overflow-hidden">
+            <motion.h2 
+              initial={{ y: -70 }}
+              animate={isInViewShortsTitle ? { y: 0 } : { y: -70 }}
+              transition={{ 
+                duration: 1,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              className={`text-[40px] font-semibold ${poppins.className}`}
+            >
+              Highlights
+            </motion.h2>
+          </div>
+          <div ref={refShorts} className="flex flex-row gap-4 mb-10 w-full justify-start overflow-x-auto overflow-y-hidden">
+            {reels.map((reel, index) => {
+              return (
                 <motion.div 
-                  initial={{ scale: 0.8 }}
-                  animate={isInViewEpisodes ? { scale: 1 } : { scale: 0.8 }}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={isInViewShorts ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
                   transition={{ 
-                    duration: 1,
+                    duration: 0.6,
                     ease: [0.16, 1, 0.3, 1],
-                    delay: index * 0.2
+                    delay: 0.2 + index * 0.1
                   }}
-                  key={index} 
-                  onClick={() => handleVideoClick(video.link)}
+                  key={`reel-${index}-${isInViewShorts}`}
                   onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
                   onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
-                  className="relative cursor-pointer w-full flex-shrink-0 aspect-[16/9] bg-red-100 rounded-2xl flex items-center justify-center"
+                  onClick={() => handleVideoClick(reel.link)}
+                  className="cursor-pointer w-1/4 aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-200 transition-colors"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+                  <div className="relative w-full h-full">
+                    <img 
+                      src={`/images/${reel.thumbnail}`}
+                      alt={reel.title}
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                  <img src={`/images/${video.thumbnail}`} alt={video.title} className="w-full h-full object-cover rounded-2xl" />
                 </motion.div>
-                <motion.span 
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={isInViewEpisodes ? { y: 0, opacity: 1 } : { y: -10, opacity: 0 }}
-                  transition={{ 
-                    duration: 1,
-                    ease: [0.16, 1, 0.3, 1],
-                    delay: 0.2
-                  }}
-                >
-                  <span>{video.title}</span>
-                </motion.span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Links Section */}
-      <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center">
-        <div ref={refLinksTitle} className="w-full h-14 my-10 overflow-hidden">
-          <motion.h2 
-            initial={{ y: -70 }}
-            animate={isInViewLinksTitle ? { y: 0 } : { y: -70 }}
-            transition={{ 
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className={`text-[40px] font-semibold ${poppins.className}`}
-          >
-            Follow Us
-          </motion.h2>
-        </div>
-        <div className="w-full">
-          {
-            projects.map( (project, index) => {
-              return (
-                <Link  
-                  key={index} 
-                  href={project.link}
-                  target="_blank"
-                  onMouseEnter={() => {setModalWithImage({active: true, index, image: true, string: "View"})}} 
-                  onMouseLeave={() => {setModalWithImage({active: false, index, image: false, string: "View"})}} 
-                  className="flex w-full justify-between items-center p-[50px_50px] border-t border-[rgb(201,201,201)] cursor-pointer transition-all duration-200 hover:opacity-50 last:border-b"
-                >
-                  <h2 className="text-[40px] m-0 font-normal transition-all duration-400 group-hover:-translate-x-[10px]">{project.title}</h2>
-                  <p className="transition-all duration-400 font-light group-hover:translate-x-[10px]">{project.description}</p>
-                </Link>
               )
-            })
-          }
+            })}
+          </div>
+        </div>
+        <div ref={refCurvedLine} className="absolute overflow-hidden -bottom-[50vh] w-full h-[50vh] z-50">
+          <CurvedLine isInView={isInViewCurvedLine} />
         </div>
       </div>
-
-      {/* Shorts Section */}
-      <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center"> 
-        <div ref={refShortsTitle} className="w-full h-14 my-10 overflow-hidden">
-          <motion.h2 
-            initial={{ y: -70 }}
-            animate={isInViewShortsTitle ? { y: 0 } : { y: -70 }}
-            transition={{ 
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className={`text-[40px] font-semibold ${poppins.className}`}
-          >
-            Highlights
-          </motion.h2>
-        </div>
-        <div ref={refShorts} className="flex flex-row gap-4 mb-10 w-full justify-start overflow-x-auto overflow-y-hidden">
-          {reels.map((reel, index) => {
-            return (
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                animate={isInViewShorts ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                transition={{ 
-                  duration: 0.6,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.2 + index * 0.1
-                }}
-                key={`reel-${index}-${isInViewShorts}`}
-                onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
-                onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
-                onClick={() => handleVideoClick(reel.link)}
-                className="cursor-pointer w-1/4 aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-200 transition-colors"
-              >
-                <div className="relative w-full h-full">
-                  <img 
-                    src={`/images/${reel.thumbnail}`}
-                    alt={reel.title}
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
+      <div className="relative h-[50vh] w-full bg-red-100">
       </div>
 
-      </div>
-
-      <div className="relative inset-0 z-0 w-full p-20 flex flex-col items-center justify-center">
-        <span>This is a fan site. We do not own the rights to the content. All rights belong to their respective owners.</span>
-        <span>If you are the owner of the content and would like to get in contact, please send an email to <a href="mailto:bisteau@gmail.com">bisteau@gmail.com</a>.</span>
-      </div>
-
-
-      <div className="fixed bottom-0 z-10 w-full p-20 bg-black text-white flex flex-col items-center justify-center">
+      <div className="fixed bottom-0 z-10 w-full h-1/2 bg-black text-white flex flex-col items-center justify-center">
         <span>This is a fan site. We do not own the rights to the content. All rights belong to their respective owners.</span>
         <span>If you are the owner of the content and would like to get in contact, please send an email to <a href="mailto:bisteau@gmail.com">bisteau@gmail.com</a>.</span>
       </div>

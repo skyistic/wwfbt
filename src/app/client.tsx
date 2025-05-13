@@ -330,8 +330,8 @@ export default function ClientPage() {
             {reels.map((reel, index) => {
               return (
                 <motion.div 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={isInViewShorts ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={isInViewShorts ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
                   transition={{ 
                     duration: 0.6,
                     ease: [0.16, 1, 0.3, 1],
@@ -366,10 +366,10 @@ export default function ClientPage() {
           <CurvedLine isInView={isInViewCurvedLine} />
         </div>
       </div>
-      <div className="relative h-[50vh] w-full bg-red-100">
+      <div className="relative h-[50vh] w-full bg-white">
       </div>
 
-      <div className="fixed bottom-0 z-10 w-full h-1/2 bg-black text-white flex flex-col items-center justify-center">
+      <div className="fixed bottom-0 z-10 w-full h-1/2 text-center sm:text-left p-4 bg-black text-white flex flex-col items-center justify-center">
         <span>This is a fan site. We do not own the rights to the content. All rights belong to their respective owners.</span>
         <span>If you are the owner of the content and would like to get in contact, please send an email to <a href="mailto:bisteau@gmail.com">bisteau@gmail.com</a>.</span>
       </div>

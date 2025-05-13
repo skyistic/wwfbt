@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { Poppins } from 'next/font/google';
 import { useRef } from 'react';
 import Link from 'next/link';
+import { Analytics } from "@vercel/analytics/next"
 
 const poppins = Poppins({ 
   weight: '900',

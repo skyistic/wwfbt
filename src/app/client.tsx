@@ -46,6 +46,11 @@ const projects = [
 
 const videos = [
   {
+    link: "dlq5pTRcIQA",
+    title: "TOAST MAKES YVONNE'S DATING PROFILE |EP 2|",
+    thumbnail: "episode_2.jpg",
+  },
+  {
     link: "MQ-wQFeXoLU",
     title: "We Fight A Lot So, We're Starting A Podcast |EP 1|",
     thumbnail: "episode_1.jpg",

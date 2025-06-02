@@ -46,6 +46,16 @@ const projects = [
 
 const videos = [
   {
+    link: "NHEauw009nw",
+    title: "Toast Finally Apologizes |EP 4|",
+    thumbnail: "episode_4.jpg",
+  },
+  {
+    link: "jDFKrOp34WI",
+    title: "Finally Being Honest With Each Other |EP 3|",
+    thumbnail: "episode_3.jpg",
+  },
+  {
     link: "dlq5pTRcIQA",
     title: "TOAST MAKES YVONNE'S DATING PROFILE |EP 2|",
     thumbnail: "episode_2.jpg",
@@ -176,7 +186,7 @@ export default function ClientPage() {
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
         {/* Hero Section */}
         <div className="bg-[#f8e7d3] text-[#532a24] w-screen min-h-screen flex flex-col items-center justify-center">
-          <div className="flex flex-row overflow-hidden gap-4">
+          <div className="hidden md:flex flex-row overflow-hidden gap-4">
             <div className="h-[90px]">
               <motion.h2 
                 initial={{ y: -400 }}
@@ -201,6 +211,21 @@ export default function ClientPage() {
                 className={`text-[60px] font-semibold ${poppins.className}`}
               >
                 Before This<br/>Before This<br/>Before This
+              </motion.h2>
+            </div>
+          </div>
+          <div className="flex md:hidden flex-row overflow-hidden gap-4">
+            <div className="h-[70px]">
+              <motion.h2 
+                initial={{ y: -400 }}
+                animate={{ y: 0 }}
+                transition={{ 
+                  duration: 1,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className={`text-[40px] font-semibold ${poppins.className}`}
+              >
+                We Were Fighting Before This<br/>We Were Fighting Before This<br/>We Were Fighting Before This
               </motion.h2>
             </div>
           </div>
@@ -240,8 +265,8 @@ export default function ClientPage() {
               return (
                 <div key={index} className="w-1/3 flex flex-col items-center justify-center gap-4">
                   <motion.div 
-                    initial={{ scale: 0.8 }}
-                    animate={isInViewEpisodes ? { scale: 1 } : { scale: 0.8 }}
+                    initial={{ scale: 0.3, opacity: 0 }}
+                    animate={isInViewEpisodes ? { scale: 1, opacity: 1 } : { scale: 0.3, opacity: 0 }}
                     transition={{ 
                       duration: 1,
                       ease: [0.16, 1, 0.3, 1],
@@ -270,8 +295,10 @@ export default function ClientPage() {
                       ease: [0.16, 1, 0.3, 1],
                       delay: 0.2
                     }}
+                    className="w-full relative"
                   >
-                    <span>{video.title}</span>
+                    <span className="absolute top-0 left-0 line-clamp-2">{video.title}</span>
+                    <span className="line-clamp-2 w-full text-white">"x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x"</span>
                   </motion.span>
                 </div>
               )

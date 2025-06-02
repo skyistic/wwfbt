@@ -7,6 +7,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { Analytics } from "@vercel/analytics/next"
 import { track } from '@vercel/analytics';
+import Image from 'next/image';
 
 const poppins = Poppins({ 
   weight: '900',
@@ -285,7 +286,13 @@ export default function ClientPage() {
                         </svg>
                       </div>
                     </div>
-                    <img src={`/images/${video.thumbnail}`} alt={video.title} className="w-full h-full object-cover rounded-2xl" />
+                    <Image 
+                      src={`/images/${video.thumbnail}`} 
+                      alt={video.title} 
+                      className="w-full h-full object-cover rounded-2xl"
+                      width={640}
+                      height={360}
+                    />
                   </motion.div>
                   <motion.span 
                     initial={{ y: -10, opacity: 0 }}
@@ -298,7 +305,7 @@ export default function ClientPage() {
                     className="w-full relative"
                   >
                     <span className="absolute top-0 left-0 line-clamp-2">{video.title}</span>
-                    <span className="line-clamp-2 w-full text-white">"x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x"</span>
+                    <span className="line-clamp-2 w-full text-white">&quot;x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x&quot;</span>
                   </motion.span>
                 </div>
               )
@@ -376,10 +383,12 @@ export default function ClientPage() {
                   className="cursor-pointer w-1/4 aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-200 transition-colors"
                 >
                   <div className="relative w-full h-full">
-                    <img 
+                    <Image 
                       src={`/images/${reel.thumbnail}`}
                       alt={reel.title}
                       className="w-full h-full object-cover rounded-xl"
+                      width={360}
+                      height={640}
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">

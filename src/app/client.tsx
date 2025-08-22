@@ -266,7 +266,7 @@ export default function ClientPage() {
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, type: "spring", stiffness: 300, damping: 20 }}
-        className="relative z-40 flex flex-row justify-between w-full px-10 pt-6"
+        className="relative z-40 flex flex-row justify-between w-full px-4 sm:px-10 pt-6"
       >
         <Link
           href="https://www.instagram.com/wewerefightingbeforethis"
@@ -281,7 +281,7 @@ export default function ClientPage() {
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
         {/* Hero Section */}
 
-        <div className="text-[#532a24] p-10 -mt-10 w-screen min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="text-[#532a24] p-2 sm:p-10 mt-4 sm:-mt-4 w-screen min-h-none sm:min-h-screen flex flex-col items-center justify-start relative overflow-hidden">
           {/* Banner Background */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -300,7 +300,7 @@ export default function ClientPage() {
             </motion.div>
 
           {/* Main hero content */}
-          <div className="bottom-24 max-w-[1000px] relative z-10 flex flex-row">
+          <div className="gap-6 my-6 sm:gap-0 sm:my-0 bottom-0 sm:bottom-24 max-w-[1000px] relative z-10 flex flex-col sm:flex-row">
             {/* Animated title */}
             <div className="w-fit">
               <motion.div
@@ -317,7 +317,7 @@ export default function ClientPage() {
               </motion.div>
             </div>
 
-            <div className="flex flex-col gap-2 text-right items-end justify-end">
+            <div className="flex flex-col gap-2 text-left sm:text-right items-start sm:items-end justify-end">
               {/* Subtitle */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -339,8 +339,11 @@ export default function ClientPage() {
                 transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="mb-2"
               >
-                <p className="text-lg md:text-xl text-[#532a24]/80 max-w-3xl mx-auto leading-relaxed">
-                📺 Where two best friends bicker,<br/>banter, and spill the tea 
+                <p className="block sm:hidden text-lg md:text-xl text-[#532a24]/80 max-w-3xl mx-auto leading-relaxed">
+                  📺 Where two best friends bicker, banter, and spill the tea 
+                </p>
+                <p className="hidden sm:block text-lg md:text-xl text-[#532a24]/80 max-w-3xl mx-auto leading-relaxed">
+                  📺 Where two best friends bicker,<br/>banter, and spill the tea 
                 </p>
               </motion.div>
             </div>
@@ -348,7 +351,7 @@ export default function ClientPage() {
         </div>
 
         {/* Scrolling Text Banner */}
-        <div className="-mt-22 w-full border-t-3 border-b-3 border-[#532a24] bg-[#532a24]/10 text-black py-4 overflow-hidden">
+        <div className="mt-0 sm:-mt-30 w-full border-t-3 border-b-3 border-[#532a24] bg-[#532a24]/10 text-black py-4 overflow-hidden">
           <motion.div
             animate={{ x: [0, -2000] }}
             transition={{
@@ -375,7 +378,7 @@ export default function ClientPage() {
 
         {/* Video Section */}
         <div className="text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-start justify-center">
-          <div ref={ref} className="w-full h-14 my-10 overflow-hidden">
+          <div ref={ref} className="w-full h-14 mb-8 mt-12 overflow-hidden">
             <motion.h2 
               initial={{ y: -70 }}
               animate={isInView ? { y: 0 } : { y: -70 }}
@@ -383,7 +386,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-4xl sm:text-5xl font-semibold mx-4 ${poppins.className}`}
+              className={`text-5xl font-semibold mx-4 ${poppins.className}`}
             >
               Episodes
             </motion.h2>
@@ -442,7 +445,7 @@ export default function ClientPage() {
 
         {/* Links Section */}
         <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center">
-          <div ref={refLinksTitle} className="w-full h-14 my-10 overflow-hidden">
+          <div ref={refLinksTitle} className="w-full h-14 mb-8 mt-12 overflow-hidden">
             <motion.h2 
               initial={{ y: -70 }}
               animate={isInViewLinksTitle ? { y: 0 } : { y: -70 }}
@@ -484,7 +487,7 @@ export default function ClientPage() {
 
         {/* Shorts Section */}
         <div className="relative z-20 bg-[#ffffff] text-[#000000] w-full max-w-[1000px] flex flex-col gap-6 items-center justify-center"> 
-          <div ref={refShortsTitle} className="w-full h-14 my-10 overflow-hidden">
+          <div ref={refShortsTitle} className="w-full h-14 mb-8 mt-12 overflow-hidden">
             <motion.h2 
               initial={{ y: -70 }}
               animate={isInViewShortsTitle ? { y: 0 } : { y: -70 }}

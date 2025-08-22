@@ -287,16 +287,17 @@ export default function ClientPage() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              className="w-full aspect-[20/6]"
             >
-            <Image
-              src="/images/banner.png"
-              alt="We Were Fighting Before This Banner"
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="w-full h-auto max-h-full object-contain rounded-3xl"
-              priority
-            />
+              <Image
+                src="/images/banner.png"
+                alt="We Were Fighting Before This Banner"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="w-full h-auto max-h-full object-contain rounded-3xl"
+                priority
+              />
             </motion.div>
 
           {/* Main hero content */}

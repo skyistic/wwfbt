@@ -270,8 +270,8 @@ export default function ClientPage() {
               </motion.h2>
             </div>
           </div>
-          <div className="flex md:hidden flex-row overflow-hidden gap-4">
-            <div className="h-[70px]">
+          <div className="flex md:hidden flex-row overflow-hidden gap-4 p-4">
+            <div className="h-[90px]">
               <motion.h2 
                 initial={{ y: -400 }}
                 animate={{ y: 0 }}
@@ -279,13 +279,13 @@ export default function ClientPage() {
                   duration: 1,
                   ease: [0.16, 1, 0.3, 1]
                 }}
-                className={`text-[40px] font-semibold ${poppins.className}`}
+                className={`text-[35px] font-semibold ${poppins.className}`}
               >
                 We Were Fighting Before This<br/>We Were Fighting Before This<br/>We Were Fighting Before This
               </motion.h2>
             </div>
           </div>
-          <div className="h-8 overflow-hidden">
+          <div className="w-screen px-4 h-8 overflow-hidden">
             <motion.span 
               initial={{ y: -50 }}
               animate={{ y: 0 }}
@@ -311,12 +311,12 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold ${poppins.className}`}
+              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
             >
               Episodes
             </motion.h2>
           </div>
-          <div ref={refEpisodes} className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 w-full pb-4">
+          <div ref={refEpisodes} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-2 w-full pb-4">
             {videos.map((video, index) => {
               return (
                 <div key={index} className="p-2 rounded-xl hover:shadow-[0px_0px_40px_-8px_rgba(0,_0,_0,_0.1)] hover:scale-105 transition-all duration-200 w-full flex flex-col items-center justify-center gap-4">
@@ -332,7 +332,7 @@ export default function ClientPage() {
                     onClick={() => handleVideoClick(video.link)}
                     onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
                     onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
-                    className="relative cursor-pointer min-w-[200px] w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
+                    className="relative cursor-pointer min-w-none sm:min-w-[200px] w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
@@ -359,7 +359,7 @@ export default function ClientPage() {
                     }}
                     className="w-full relative"
                   >
-                    <span className="absolute top-0 left-0 line-clamp-2">{video.title}</span>
+                    <span className="absolute top-0 left-0 line-clamp-3">{video.title}</span>
                     <span className="line-clamp-2 w-full text-transparent">&quot;x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x&quot;</span>
                   </motion.span>
                 </div>
@@ -378,7 +378,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold ${poppins.className}`}
+              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
             >
               Follow Us
             </motion.h2>
@@ -394,7 +394,7 @@ export default function ClientPage() {
                     onClick={() => track('Link Click', { title: project.title, url: project.link })}
                     onMouseEnter={() => {setModalWithImage({active: true, index, image: true, string: "View"})}} 
                     onMouseLeave={() => {setModalWithImage({active: false, index, image: false, string: "View"})}} 
-                    className="flex w-full justify-between items-center p-[50px_50px] border-t border-[rgb(201,201,201)] cursor-pointer transition-all duration-200 hover:opacity-50 last:border-b"
+                    className="flex w-full justify-between items-center p-[50px_20px] sm:p-[50px_50px] border-t border-[rgb(201,201,201)] cursor-pointer transition-all duration-200 hover:opacity-50 last:border-b"
                   >
                     <h2 className="text-[40px] m-0 font-normal transition-all duration-400 group-hover:-translate-x-[10px]">{project.title}</h2>
                     <p className="transition-all duration-400 font-light group-hover:translate-x-[10px]">{project.description}</p>
@@ -415,7 +415,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold ${poppins.className}`}
+              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
             >
               Highlights
             </motion.h2>

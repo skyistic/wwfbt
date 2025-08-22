@@ -285,7 +285,7 @@ export default function ClientPage() {
               </motion.h2>
             </div>
           </div>
-          <div className="w-screen px-4 sm:text-center h-8 overflow-hidden">
+          <div className="w-screen px-4 text-left sm:text-center h-8 overflow-hidden">
             <motion.span 
               initial={{ y: -50 }}
               animate={{ y: 0 }}

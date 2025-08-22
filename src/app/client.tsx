@@ -199,7 +199,7 @@ export default function ClientPage() {
   const refEpisodes = useRef(null);
   const refShortsTitle = useRef(null);
   const refShorts = useRef(null);
-  const refCurvedLine = useRef(null);
+  // const refCurvedLine = useRef(null);
 
   // Add effect to control body overflow
   useEffect(() => {

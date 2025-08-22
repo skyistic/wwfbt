@@ -18,34 +18,89 @@ const projects = [
   {
     title: "YouTube",
     description: "Watch",
-    src: "1.jpg",
+    src: "yt.png",
     color: "#000000",
-    link: "https://youtu.be/MQ-wQFeXoLU?si=5IpqTooELuZpBcnv"
+    link: "https://www.youtube.com/@WeWereFightingBeforeThis"
   },
   {
     title: "Instagram",
     description: "Follow",
-    src: "1.jpg",
+    src: "ig.png",
     color: "#8C8C8C",
     link: "https://www.instagram.com/wewerefightingbeforethis"
   },
   {
     title: "@Toast",
     description: "Follow",
-    src: "1.jpg",
+    src: "toast.png",
     color: "#EFE8D3",
     link: "https://www.instagram.com/toastpodcast"
   },  
   {
     title: "@Yvonne",
     description: "Follow",
-    src: "1.jpg",
+    src: "yvonne.png",
     color: "#706D63",
     link: "https://www.instagram.com/yvonne_y_y"
   }
 ]
 
 const videos = [
+  {
+    link: "9DBy1JdM4GY",
+    title: "They cheated, should we forgive them? 👀 |EP 15|",
+    thumbnail: "episode_15.jpg",
+  },
+  {
+    link: "UPmFsjPOa_s",
+    title: "Yvonne finally apologizes to Toast |EP 14|",
+    thumbnail: "episode_14.jpg",
+  },
+  {
+    link: "ZQ5x9vL2Qao",
+    title: "How we lost millions 💸 😭 💸 |EP 13|",
+    thumbnail: "episode_13.jpg",
+  },
+  {
+    link: "LdS67BTtcR4",
+    title: "The truth comes out 😳 |EP 12|",
+    thumbnail: "episode_12.jpg",
+  },
+  {
+    link: "kIihjWKFiW0",
+    title: "Talking to each other's exes 👀 |EP 11|",
+    thumbnail: "episode_11.jpg",
+  },
+  {
+    link: "kIihjWKFiW0",
+    title: "Our spiciest episode yet 🌶️ 👀 |EP 10|",
+    thumbnail: "episode_10.jpg",
+  },
+  {
+    link: "5fTM54w6Quc",
+    title: "Should we date each other? |EP 9|",
+    thumbnail: "episode_9.jpg",
+  },
+  {
+    link: "fzpPb19306E",
+    title: "Opening up about the Fed situation |EP 8|",
+    thumbnail: "episode_8.jpg",
+  },
+  {
+    link: "9xeiTQl3FHc",
+    title: "Should we go public with our relationships? |EP 7|",
+    thumbnail: "episode_7.jpg",
+  },
+  {
+    link: "eniSz0eeV-k",
+    title: "Toast Opens Up About His Depression |EP 6|",
+    thumbnail: "episode_6.jpg",
+  },
+  {
+    link: "JUbG3dXhkZw",
+    title: "THIS MIGHT BE OUR LAST EPISODE |EP 5|",
+    thumbnail: "episode_5.jpg",
+  },
   {
     link: "NHEauw009nw",
     title: "Toast Finally Apologizes |EP 4|",
@@ -261,10 +316,10 @@ export default function ClientPage() {
               Episodes
             </motion.h2>
           </div>
-          <div ref={refEpisodes} className="flex flex-row gap-4 w-full overflow-x-auto pb-4">
+          <div ref={refEpisodes} className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 w-full pb-4">
             {videos.map((video, index) => {
               return (
-                <div key={index} className="w-1/3 flex flex-col items-center justify-center gap-4">
+                <div key={index} className="p-2 rounded-xl hover:shadow-[0px_0px_40px_-8px_rgba(0,_0,_0,_0.1)] hover:scale-105 transition-all duration-200 w-full flex flex-col items-center justify-center gap-4">
                   <motion.div 
                     initial={{ scale: 0.3, opacity: 0 }}
                     animate={isInViewEpisodes ? { scale: 1, opacity: 1 } : { scale: 0.3, opacity: 0 }}
@@ -277,7 +332,7 @@ export default function ClientPage() {
                     onClick={() => handleVideoClick(video.link)}
                     onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
                     onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
-                    className="relative cursor-pointer w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
+                    className="relative cursor-pointer min-w-[200px] w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-12 h-12 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
@@ -289,7 +344,7 @@ export default function ClientPage() {
                     <Image 
                       src={`/images/${video.thumbnail}`} 
                       alt={video.title} 
-                      className="w-full h-full object-cover rounded-2xl"
+                      className="w-full h-full object-cover rounded-lg"
                       width={640}
                       height={360}
                     />
@@ -305,7 +360,7 @@ export default function ClientPage() {
                     className="w-full relative"
                   >
                     <span className="absolute top-0 left-0 line-clamp-2">{video.title}</span>
-                    <span className="line-clamp-2 w-full text-white">&quot;x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x&quot;</span>
+                    <span className="line-clamp-2 w-full text-transparent">&quot;x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x&quot;</span>
                   </motion.span>
                 </div>
               )
@@ -403,16 +458,18 @@ export default function ClientPage() {
             })}
           </div>
         </div>
-        <div ref={refCurvedLine} className="absolute overflow-hidden -bottom-[50vh] w-full h-[50vh] z-50">
+        {/* Disable animated curve */}
+        {/* <div ref={refCurvedLine} className="absolute overflow-hidden -bottom-[50vh] w-full h-[50vh] z-50">
           <CurvedLine isInView={isInViewCurvedLine} />
-        </div>
+        </div> */}
       </div>
       <div className="relative h-[50vh] w-full bg-white">
       </div>
 
       <div className="fixed bottom-0 z-10 w-full h-1/2 text-center sm:text-left p-4 bg-black text-white flex flex-col items-center justify-center">
-        <span>This is a fan site. We do not own the rights to the content. All rights belong to their respective owners.</span>
-        <span>If you are the owner of the content and would like to get in contact, please send an email to <a href="mailto:bisteau@gmail.com">bisteau@gmail.com</a>.</span>
+        <span className="max-w-2xl text-center">
+          This is an unofficial fan site for the <i>We Were Fighting Before This</i> podcast and is not affiliated with or endorsed by its creators. All rights to the podcast, its content, and related materials remain with their respective owners.
+        </span>
       </div>
 
       <Modal modal={modal} projects={projects} />

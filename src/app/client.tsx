@@ -150,46 +150,59 @@ const reels = [
   }
 ]
 
-// function CurvedLine({isInView}: {isInView: boolean}) {
-//   const [paths, setPaths] = useState({
-//     initial: "",
-//     target: ""
-//   });
+function AnimatedButtonFollow() {
+  const [isHovered, setIsHovered] = useState(false);
 
-//   useEffect(() => {
-//     if (!window) return;
-
-//     setPaths({
-//       initial: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 200 0 0`,
-//       target: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 0 0 0`,
-//     });
-//   }, []);
-
-//   const curve = {
-//     initial: {
-//       d: paths.initial
-//     },
-//     enter: {
-//       d: paths.target,
-//       transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
-//     },
-//     exit: {
-//       d: paths.initial,
-//       transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
-//     }
-//   };
-
-//   return (
-//     <svg className="absolute overflow-hidden top-0 left-0 w-full h-full fill-white stroke-none">
-//       <motion.path 
-//         variants={curve} 
-//         initial="initial" 
-//         animate={isInView ? "enter" : "exit"}
-//       ></motion.path>
-//     </svg>
-//   );
-// }
-
+  return (
+    <Link
+      href="https://www.youtube.com/@WeWereFightingBeforeThis"
+      target="_blank"
+      onClick={() => track('Hero CTA', { type: 'youtube', button: 'Watch Latest Episode' })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative flex flex-row justify-center items-center border-2 border-[#532a24] hover:border-[#e94545] text-[#532a24] px-4 py-2 rounded-full text-base font-semibold overflow-hidden transition-colors duration-300"
+    >
+      {/* Circular fill animation */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: isHovered ? 70 : 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute w-2 h-2 bg-[#e94545] rounded-full left-4 top-1/2 transform -translate-y-1/2 origin-center"
+      />
+      
+      {/* Content */}
+      <div className="relative z-10 flex flex-row justify-center items-center">
+        <div className="w-2 h-2 bg-[#e94545] mr-2 bg-opacity-50 rounded-full flex items-center justify-center"></div>
+        <motion.div
+          animate={{ x: isHovered ? -16 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex items-center"
+        >
+          <motion.span
+            animate={{ color: isHovered ? '#ffffff' : '#532a24' }}
+            transition={{ duration: 0.3 }}
+          >
+            Watch Latest Episode
+          </motion.span>
+          <motion.svg
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ 
+              opacity: isHovered ? 1 : 0,
+              x: isHovered ? 20 : 0
+            }}
+            transition={{ duration: 0.3 }}
+            className="absolute right-0 w-4 h-4 ml-2 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+          </motion.svg>
+        </motion.div>
+      </div>
+    </Link>
+  )
+}
 export default function ClientPage() {
   const [modal, setModal] = useState({active: false, index: 0, image: false, string: "View"})
   const [modalWithImage, setModalWithImage] = useState({active: false, index: 0, image: false, string: "View"})
@@ -222,16 +235,26 @@ export default function ClientPage() {
   const isInViewShorts = useInView(refShorts, { once: false, amount: 0.3 });
   // const isInViewCurvedLine = useInView(refCurvedLine, { once: false });
 
-  const handleVideoClick = (link: string) => {
+  const handleVideoClick = (link: string, title?: string, section?: string) => {
     if (link.includes('instagram.com')) {
       // Extract reel ID from Instagram URL
       const reelId = link.split('/p/')[1].split('/')[0];
       setVideoPopup({active: true, videoId: reelId, type: 'instagram'})
-      track('Video View', { type: 'instagram', id: reelId });
+      track('Video View', { 
+        type: 'instagram', 
+        id: reelId, 
+        title: title || 'Unknown',
+        section: section || 'content'
+      });
     } else {
       // Handle YouTube video
       setVideoPopup({active: true, videoId: link, type: 'youtube'})
-      track('Video View', { type: 'youtube', id: link });
+      track('Video View', { 
+        type: 'youtube', 
+        id: link, 
+        title: title || 'Unknown',
+        section: section || 'content'
+      });
     }
   }
 
@@ -239,66 +262,115 @@ export default function ClientPage() {
     <main className="flex min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden">
       <Analytics />
       
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 300, damping: 20 }}
+        className="relative z-40 flex flex-row justify-between w-full px-10 pt-6"
+      >
+        <Link
+          href="https://www.instagram.com/wewerefightingbeforethis"
+          target="_blank"
+          onClick={() => track('Hero CTA', { type: 'instagram', button: 'Follow Us' })}
+          className="bg-[#532a24] text-white px-4 py-3 rounded-full text-base font-semibold hover:bg-[#3d1f1a] transition-all duration-300 hover:shadow-[0px_0px_40px_-8px_rgba(0,_0,_0,_0.1)]"
+        >
+          Follow Us
+        </Link>
+        <AnimatedButtonFollow />
+      </motion.div>
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
         {/* Hero Section */}
-        <div className="bg-[#f8e7d3] text-[#532a24] w-screen min-h-screen flex flex-col items-center justify-center">
-          <div className="hidden md:flex flex-row overflow-hidden gap-4">
-            <div className="h-[90px]">
-              <motion.h2 
-                initial={{ y: -400 }}
-                animate={{ y: 0 }}
-                transition={{ 
-                  duration: 1,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                className={`text-[60px] font-semibold ${poppins.className}`}
-              >
-                We Were Fighting<br/>We Were Fighting<br/>We Were Fighting
-              </motion.h2>
-            </div>
-            <div className="h-[90px]">
-              <motion.h2 
-                initial={{ y: 200 }}
-                animate={{ y: -180 }}
-                transition={{ 
-                  duration: 1,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                className={`text-[60px] font-semibold ${poppins.className}`}
-              >
-                Before This<br/>Before This<br/>Before This
-              </motion.h2>
-            </div>
-          </div>
-          <div className="flex md:hidden flex-row overflow-hidden gap-4 p-4">
-            <div className="h-[90px]">
-              <motion.h2 
-                initial={{ y: -400 }}
-                animate={{ y: 0 }}
-                transition={{ 
-                  duration: 1,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                className={`text-[35px] font-semibold ${poppins.className}`}
-              >
-                We Were Fighting Before This<br/>We Were Fighting Before This<br/>We Were Fighting Before This
-              </motion.h2>
-            </div>
-          </div>
-          <div className="w-screen px-4 text-left sm:text-center h-8 overflow-hidden">
-            <motion.span 
-              initial={{ y: -50 }}
-              animate={{ y: 0 }}
-              transition={{ 
-                delay: 0.5,
-                duration: 1,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-              className="block text-xl"
+
+        <div className="text-[#532a24] p-10 -mt-10 w-screen min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+          {/* Banner Background */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 10 }}
             >
-              A podcast dedicated to arguments 🗣️
-            </motion.span>
+            <Image
+              src="/images/banner.png"
+              alt="We Were Fighting Before This Banner"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-full h-auto max-h-full object-contain rounded-3xl"
+              priority
+            />
+            </motion.div>
+
+          {/* Main hero content */}
+          <div className="bottom-24 max-w-[1000px] relative z-10 flex flex-row">
+            {/* Animated title */}
+            <div className="w-fit">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="overflow-hidden mr-14"
+              >
+                <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black leading-tight ${poppins.className}`}>
+                  <span className="block">We Were</span>
+                  <span className="block text-[#8b4513]">Fighting</span>
+                  <span className="block">Before This</span>
+                </h1>
+              </motion.div>
+            </div>
+
+            <div className="flex flex-col gap-2 text-right items-end justify-end">
+              {/* Subtitle */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <p className="text-lg md:text-xl font-medium text-[#532a24]/80 max-w-2xl mx-auto">
+                🎙️ Hosted by <span className="font-bold underline">@disguisedtoast</span> & <span className="font-bold underline">@yvonnieng</span>
+                </p>
+                <p className="text-lg md:text-xl mt-2 text-[#532a24]/70">
+                📅 New episodes every Wednesday 
+                </p>
+              </motion.div>
+
+              {/* Description */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="mb-2"
+              >
+                <p className="text-lg md:text-xl text-[#532a24]/80 max-w-3xl mx-auto leading-relaxed">
+                📺 Where two best friends bicker,<br/>banter, and spill the tea 
+                </p>
+              </motion.div>
+            </div>
           </div>
+        </div>
+
+        {/* Scrolling Text Banner */}
+        <div className="-mt-22 w-full border-t-3 border-b-3 border-[#532a24] bg-[#532a24]/10 text-black py-4 overflow-hidden">
+          <motion.div
+            animate={{ x: [0, -2000] }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="flex whitespace-nowrap py-2"
+          >
+            <span className={`text-lg font-medium px-2 font-medium ${poppins.className}`}>
+              Welcome to We Were Fighting Before This. A podcast hosted by Disguised Toast and Yvonnie where the two best friends bicker, banter, and battle it out over everything and nothing. It's unfiltered, unhinged, and unexpectedly wholesome.
+            </span>
+            <span className={`text-lg font-medium px-2 font-medium ${poppins.className}`}>
+              Welcome to We Were Fighting Before This. A podcast hosted by Disguised Toast and Yvonnie where the two best friends bicker, banter, and battle it out over everything and nothing. It's unfiltered, unhinged, and unexpectedly wholesome.
+            </span>
+            <span className={`text-lg font-medium px-2 font-medium ${poppins.className}`}>
+              Welcome to We Were Fighting Before This. A podcast hosted by Disguised Toast and Yvonnie where the two best friends bicker, banter, and battle it out over everything and nothing. It's unfiltered, unhinged, and unexpectedly wholesome.
+            </span>
+            <span className={`text-lg font-medium px-2 font-medium ${poppins.className}`}>
+              Welcome to We Were Fighting Before This. A podcast hosted by Disguised Toast and Yvonnie where the two best friends bicker, banter, and battle it out over everything and nothing. It's unfiltered, unhinged, and unexpectedly wholesome.
+            </span>
+          </motion.div>
         </div>
 
         {/* Video Section */}
@@ -311,7 +383,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
+              className={`text-4xl sm:text-5xl font-semibold mx-4 ${poppins.className}`}
             >
               Episodes
             </motion.h2>
@@ -329,7 +401,7 @@ export default function ClientPage() {
                       delay: index * 0.2
                     }}
                     key={index} 
-                    onClick={() => handleVideoClick(video.link)}
+                    onClick={() => handleVideoClick(video.link, video.title, 'episodes')}
                     onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
                     onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
                     className="relative cursor-pointer min-w-none sm:min-w-[200px] w-full flex-shrink-0 aspect-[16/9] bg-black rounded-2xl flex items-center justify-center"
@@ -378,7 +450,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
+              className={`text-4xl sm:text-5xl font-semibold mx-4 ${poppins.className}`}
             >
               Follow Us
             </motion.h2>
@@ -391,7 +463,12 @@ export default function ClientPage() {
                     key={index} 
                     href={project.link}
                     target="_blank"
-                    onClick={() => track('Link Click', { title: project.title, url: project.link })}
+                    onClick={() => track('Social Link Click', { 
+                      platform: project.title, 
+                      url: project.link,
+                      section: 'follow-us',
+                      description: project.description
+                    })}
                     onMouseEnter={() => {setModalWithImage({active: true, index, image: true, string: "View"})}} 
                     onMouseLeave={() => {setModalWithImage({active: false, index, image: false, string: "View"})}} 
                     className="flex w-full justify-between items-center p-[50px_20px] sm:p-[50px_50px] border-t border-[rgb(201,201,201)] cursor-pointer transition-all duration-200 hover:opacity-50 last:border-b"
@@ -415,7 +492,7 @@ export default function ClientPage() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              className={`text-[40px] font-semibold mx-4 ${poppins.className}`}
+              className={`text-4xl sm:text-5xl font-semibold mx-4 ${poppins.className}`}
             >
               Highlights
             </motion.h2>
@@ -434,7 +511,7 @@ export default function ClientPage() {
                   key={`reel-${index}-${isInViewShorts}`}
                   onMouseEnter={() => {setModal({active: true, index, image: false, string: "Watch"})}} 
                   onMouseLeave={() => {setModal({active: false, index, image: false, string: "View"})}} 
-                  onClick={() => handleVideoClick(reel.link)}
+                  onClick={() => handleVideoClick(reel.link, reel.title, 'highlights')}
                   className="cursor-pointer w-1/4 aspect-[9/16] bg-gray-100 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-200 transition-colors"
                 >
                   <div className="relative w-full h-full">
@@ -481,26 +558,51 @@ export default function ClientPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.1 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setVideoPopup({active: false, videoId: null, type: 'youtube'})}>
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" 
+          onClick={() => {
+            track('Video Popup', { action: 'close', type: videoPopup.type, id: videoPopup.videoId });
+            setVideoPopup({active: false, videoId: null, type: 'youtube'});
+          }}>
+          
+          {/* Close button */}
+          <button
+            className="absolute top-4 right-4 z-60 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              track('Video Popup', { action: 'close_button', type: videoPopup.type, id: videoPopup.videoId });
+              setVideoPopup({active: false, videoId: null, type: 'youtube'});
+            }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
           <motion.div 
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.9 }}
-            transition={{ duration: 0.1 }}
-            className={`relative ${videoPopup.type === 'instagram' ? 'w-full max-w-[400px] aspect-[9/16]' : 'w-full max-w-3xl aspect-video'}`} 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className={`relative ${videoPopup.type === 'instagram' ? 'w-full max-w-[400px] aspect-[9/16]' : 'w-full max-w-4xl aspect-video'} mx-4`} 
             onClick={e => e.stopPropagation()}
           >
+            {/* Loading spinner */}
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-2xl">
+              <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            </div>
+            
             <iframe
-              className="w-full h-full rounded-2xl overflow-hidden"
+              className="w-full h-full rounded-2xl overflow-hidden relative z-10"
               src={videoPopup.type === 'instagram' 
                 ? `https://www.instagram.com/p/${videoPopup.videoId}/embed`
-                : `https://www.youtube.com/embed/${videoPopup.videoId}?autoplay=1`
+                : `https://www.youtube.com/embed/${videoPopup.videoId}?autoplay=1&rel=0&modestbranding=1`
               }
               title={videoPopup.type === 'instagram' ? "Instagram Reel" : "YouTube video player"}
               frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              loading="eager"
             ></iframe>
           </motion.div>
         </motion.div>

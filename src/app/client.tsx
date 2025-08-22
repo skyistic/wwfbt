@@ -150,45 +150,45 @@ const reels = [
   }
 ]
 
-function CurvedLine({isInView}: {isInView: boolean}) {
-  const [paths, setPaths] = useState({
-    initial: "",
-    target: ""
-  });
+// function CurvedLine({isInView}: {isInView: boolean}) {
+//   const [paths, setPaths] = useState({
+//     initial: "",
+//     target: ""
+//   });
 
-  useEffect(() => {
-    if (!window) return;
+//   useEffect(() => {
+//     if (!window) return;
 
-    setPaths({
-      initial: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 200 0 0`,
-      target: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 0 0 0`,
-    });
-  }, []);
+//     setPaths({
+//       initial: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 200 0 0`,
+//       target: `M0 0 L${window.innerWidth} 0 Q${window.innerWidth/2} 0 0 0`,
+//     });
+//   }, []);
 
-  const curve = {
-    initial: {
-      d: paths.initial
-    },
-    enter: {
-      d: paths.target,
-      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
-    },
-    exit: {
-      d: paths.initial,
-      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
-    }
-  };
+//   const curve = {
+//     initial: {
+//       d: paths.initial
+//     },
+//     enter: {
+//       d: paths.target,
+//       transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
+//     },
+//     exit: {
+//       d: paths.initial,
+//       transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
+//     }
+//   };
 
-  return (
-    <svg className="absolute overflow-hidden top-0 left-0 w-full h-full fill-white stroke-none">
-      <motion.path 
-        variants={curve} 
-        initial="initial" 
-        animate={isInView ? "enter" : "exit"}
-      ></motion.path>
-    </svg>
-  );
-}
+//   return (
+//     <svg className="absolute overflow-hidden top-0 left-0 w-full h-full fill-white stroke-none">
+//       <motion.path 
+//         variants={curve} 
+//         initial="initial" 
+//         animate={isInView ? "enter" : "exit"}
+//       ></motion.path>
+//     </svg>
+//   );
+// }
 
 export default function ClientPage() {
   const [modal, setModal] = useState({active: false, index: 0, image: false, string: "View"})
@@ -220,7 +220,7 @@ export default function ClientPage() {
   const isInViewEpisodes = useInView(refEpisodes, { once: false });
   const isInViewShortsTitle = useInView(refShortsTitle, { once: false });
   const isInViewShorts = useInView(refShorts, { once: false, amount: 0.3 });
-  const isInViewCurvedLine = useInView(refCurvedLine, { once: false });
+  // const isInViewCurvedLine = useInView(refCurvedLine, { once: false });
 
   const handleVideoClick = (link: string) => {
     if (link.includes('instagram.com')) {

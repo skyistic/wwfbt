@@ -47,6 +47,26 @@ const projects = [
 
 const videos = [
   {
+    link: "tpzUjd8qT5Y",
+    title: "Should we risk it all and hard launch? | EP 19 |",
+    thumbnail: "episode_19.jpg",
+  },
+  {
+    link: "0ye18c8Tddo",
+    title: "Being friends with our EXES 👀 | EP 18 |",
+    thumbnail: "episode_18.jpg",
+  },
+  {
+    link: "z3uGC-NK978",
+    title: "Does this big streamer hate Toast? 👀 | EP 17 |",
+    thumbnail: "episode_17.jpg",
+  },
+  {
+    link: "tpzUjd8qT5Y",
+    title: "We hired a therapist to solve our issues... | EP 16 |",
+    thumbnail: "episode_16.jpg",
+  },
+  {
     link: "9DBy1JdM4GY",
     title: "They cheated, should we forgive them? 👀 |EP 15|",
     thumbnail: "episode_15.jpg",
@@ -281,7 +301,7 @@ export default function ClientPage() {
       <div className="relative z-20 w-full bg-[#ffffff] flex flex-col items-center justify-center">
         {/* Hero Section */}
 
-        <div className="text-[#532a24] p-2 sm:p-10 mt-4 sm:-mt-4 w-screen min-h-none sm:min-h-screen flex flex-col items-center justify-start relative overflow-hidden">
+        <div className="text-[#532a24] p-2 sm:p-10 mt-4 sm:-mt-4 w-screen min-h-none sm:min-h-2/3 lg:min-h-screen flex flex-col items-center justify-start relative overflow-hidden">
           {/* Banner Background */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -402,7 +422,7 @@ export default function ClientPage() {
                     transition={{ 
                       duration: 1,
                       ease: [0.16, 1, 0.3, 1],
-                      delay: index * 0.2
+                      delay: index * 0.04
                     }}
                     key={index} 
                     onClick={() => handleVideoClick(video.link, video.title, 'episodes')}
